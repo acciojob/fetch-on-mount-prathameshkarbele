@@ -1,13 +1,36 @@
 
-import React from "react";
+import React,{ useState, useEffect } from "react";
+import 'regenerator-runtime/runtime'
 import './../styles/App.css';
 
-const App = () => {
+
+function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/posts"
+      );
+      const json = await response.json();
+      setData(json);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div>
-        {/* Do not remove the main div */}
+      {data.map((item) => (
+        <div key={item.id}>
+          <h2>
+            {item.id}. {item.title}
+          </h2>
+          <p>{item.body}</p>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
